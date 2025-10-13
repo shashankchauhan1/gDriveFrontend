@@ -2,23 +2,12 @@
 
 function Breadcrumbs({ path, onNavigate }) {
   return (
-    <nav style={{ marginBottom: '20px' }}>
-      {/* "Home" is the root level */}
-      <span
-        onClick={() => onNavigate(null)}
-        style={{ cursor: 'pointer', color: 'blue', textDecoration: 'underline' }}
-      >
-        Home
-      </span>
-
-      {/* Map over the path segments */}
+    <nav className="breadcrumbs">
+      <span className="crumb" onClick={() => onNavigate(null)}>Home</span>
       {path.map((folder) => (
         <span key={folder._id}>
-          {' / '}
-          <span
-            onClick={() => onNavigate(folder._id)}
-            style={{ cursor: 'pointer', color: 'blue', textDecoration: 'underline' }}
-          >
+          <span style={{ color: '#94a3b8', padding: '0 6px' }}>/</span>
+          <span className="crumb" onClick={() => onNavigate(folder._id)}>
             {folder.filename}
           </span>
         </span>

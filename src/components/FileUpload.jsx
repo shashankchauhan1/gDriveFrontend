@@ -2,9 +2,9 @@
 import { useState } from 'react';
 import axios from 'axios';
 
-const API_URL = import.meta.env.VITE_API_URL;
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:7500';
 
-function FileUpload({ onUploadSuccess }) {
+function FileUpload({ currentFolderId, onUploadSuccess }) {
   const [file, setFile] = useState(null);
   const [uploading, setUploading] = useState(false);
 
@@ -20,6 +20,9 @@ function FileUpload({ onUploadSuccess }) {
     setUploading(true);
     const formData = new FormData();
     formData.append('file', file);
+    if (currentFolderId) {
+      formData.append('parentId', currentFolderId);
+    }
 
     try {
       const token = localStorage.getItem('token');
@@ -41,9 +44,12 @@ function FileUpload({ onUploadSuccess }) {
   };
 
   return (
-    <div>
-      <input type="file" onChange={handleFileChange} />
-      <button onClick={handleUpload} disabled={!file || uploading}>
+    <div className="stack">
+      <div className="field">
+        <label>Upload a file</label>
+        <input className="input" type="file" onChange={handleFileChange} />
+      </div>
+      <button className="btn" onClick={handleUpload} disabled={!file || uploading}>
         {uploading ? 'Uploading...' : 'Upload'}
       </button>
     </div>

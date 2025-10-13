@@ -2,7 +2,7 @@
 import { useState } from 'react';
 import axios from 'axios';
 
-const API_URL = import.meta.env.VITE_API_URL;
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:7500';
 
 function CreateFolder({ currentFolderId, onFolderCreated }) {
   const [folderName, setFolderName] = useState('');
@@ -31,14 +31,18 @@ function CreateFolder({ currentFolderId, onFolderCreated }) {
   };
 
   return (
-    <div>
-      <input
-        type="text"
-        placeholder="New folder name"
-        value={folderName}
-        onChange={(e) => setFolderName(e.target.value)}
-      />
-      <button onClick={handleCreateFolder} disabled={isCreating}>
+    <div className="stack">
+      <div className="field">
+        <label>Create a folder</label>
+        <input
+          className="input"
+          type="text"
+          placeholder="New folder name"
+          value={folderName}
+          onChange={(e) => setFolderName(e.target.value)}
+        />
+      </div>
+      <button className="btn" onClick={handleCreateFolder} disabled={isCreating}>
         {isCreating ? 'Creating...' : 'Create Folder'}
       </button>
     </div>

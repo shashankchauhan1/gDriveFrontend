@@ -35,23 +35,30 @@ function ShareModal({ file, onClose }) {
     <div className="modal-backdrop">
       <div className="modal-content">
         <h2>Share "{file.filename}"</h2>
-        <form onSubmit={handleShare}>
-          <input
-            type="email"
-            placeholder="Enter user's email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-          />
-          <select value={role} onChange={(e) => setRole(e.target.value)}>
-            <option value="viewer">Viewer</option>
-            <option value="editor">Editor</option>
-          </select>
+        <form onSubmit={handleShare} className="form" style={{ marginTop: '12px' }}>
+          <div className="field">
+            <label>Email</label>
+            <input
+              className="input"
+              type="email"
+              placeholder="Enter user's email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+            />
+          </div>
+          <div className="field">
+            <label>Permission</label>
+            <select className="input" value={role} onChange={(e) => setRole(e.target.value)}>
+              <option value="viewer">Viewer</option>
+              <option value="editor">Editor</option>
+            </select>
+          </div>
           <div className="modal-actions">
-            <button type="submit" disabled={isSharing}>
+            <button className="btn" type="submit" disabled={isSharing}>
               {isSharing ? 'Sharing...' : 'Share'}
             </button>
-            <button type="button" onClick={onClose}>Cancel</button>
+            <button className="btn ghost" type="button" onClick={onClose}>Cancel</button>
           </div>
         </form>
       </div>

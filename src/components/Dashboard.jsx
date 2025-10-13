@@ -8,7 +8,7 @@ import CreateFolder from './CreateFolder'; // Create new folders
 import Breadcrumbs from './Breadcrumbs'; // Show folder path
 import ShareModal from './ShareModal'; // Modal for sharing files
 
-const API_URL = import.meta.env.VITE_API_URL;
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:7500';
 
 function Dashboard() {
     // State for files/folders in current directory
@@ -30,7 +30,7 @@ function Dashboard() {
 
             try {
                 // Fetch items in the current folder
-                const itemsUrl = `${API_URL}/api/files?parentId=${currentFolderId || ''}`;
+                const itemsUrl = `${API_URL}/api/files${currentFolderId ? `?parentId=${currentFolderId}` : ''}`;
                 const itemsRes = await axios.get(itemsUrl, config);
                 setItems(itemsRes.data);
 
@@ -55,9 +55,16 @@ function Dashboard() {
         setItems(prevItems => [...prevItems, newItem]);
     };
 
-    // Remove item from list after deletion
-    const handleDeleteItem = (itemId) => {
-        setItems(prevItems => prevItems.filter(item => item._id !== itemId));
+    // Delete on server then remove locally
+    const handleDeleteItem = async (itemId) => {
+        try {
+            const token = localStorage.getItem('token');
+            await axios.delete(`${API_URL}/api/files/${itemId}`, { headers: { 'x-auth-token': token } });
+            setItems(prevItems => prevItems.filter(item => item._id !== itemId));
+        } catch (err) {
+            console.error('Delete failed:', err?.response?.data || err.message);
+            alert('Failed to delete. You might not be authorized or the server errored.');
+        }
     };
 
     // Add new folder to list after creation
@@ -76,30 +83,61 @@ function Dashboard() {
     };
 
     return (
-        <div>
-            <h2>Dashboard</h2>
-            {/* We'll add breadcrumbs here later */}
-            <FileUpload currentFolderId={currentFolderId} onUploadSuccess={handleUploadSuccess} />
-            <CreateFolder currentFolderId={currentFolderId} onFolderCreated={handleFolderCreated} />
-            <hr />
-            <h3>Contents</h3>
-            <FileList
-                items={items}
-                onDelete={handleDeleteItem}
-                onFolderClick={handleFolderClick} // <-- Pass handler
-                onShareClick={handleShareClick} // <-- Pass the new handler
-            />
+        <div className="stack" style={{ paddingTop: '12px', paddingBottom: '24px' }}>
+                <h2>My Drive</h2>
+                {folderPath.length > 0 && (
+                    <div className="card" style={{ padding: '12px 16px' }}>
+                        <div className="breadcrumbs">
+                            <span className="crumb" onClick={() => setCurrentFolderId(null)}>Home</span>
+                            {folderPath.map((folder) => (
+                                <span key={folder._id}>
+                                    <span style={{ color: '#94a3b8', padding: '0 6px' }}>/</span>
+                                    <span className="crumb" onClick={() => setCurrentFolderId(folder._id)}>{folder.filename}</span>
+                                </span>
+                            ))}
+                        </div>
+                    </div>
+                )}
+                <div className="row wrap">
+                    <div className="card" style={{ flex: '1 1 320px' }}>
+                        <FileUpload currentFolderId={currentFolderId} onUploadSuccess={handleUploadSuccess} />
+                    </div>
+                    <div className="card" style={{ flex: '1 1 320px' }}>
+                        <CreateFolder currentFolderId={currentFolderId} onFolderCreated={handleFolderCreated} />
+                    </div>
+                </div>
+                <div className="row" style={{ gap: '8px' }}>
+                    <input className="input" style={{ flex: '1 1 300px' }} placeholder="Search files and folders" onKeyDown={async (e) => {
+                        if (e.key === 'Enter') {
+                            const q = e.currentTarget.value.trim();
+                            if (!q) return;
+                            try {
+                                const token = localStorage.getItem('token');
+                                const res = await axios.get(`${API_URL}/api/files/search?q=${encodeURIComponent(q)}`, { headers: { 'x-auth-token': token } });
+                                setItems(res.data);
+                            } catch (er) {
+                                console.error('Search failed', er);
+                            }
+                        }
+                    }} />
+                </div>
+                <div className="card">
+                    <h3>Contents</h3>
+                    <FileList
+                        items={items}
+                        onDelete={handleDeleteItem}
+                        onFolderClick={handleFolderClick}
+                        onShareClick={handleShareClick}
+                    />
+                </div>
 
-
-             {/* Render the modal conditionally */}
-            {isShareModalOpen && (
-                <ShareModal 
-                    file={selectedFile} 
-                    onClose={() => setIsShareModalOpen(false)} 
-                />
-            )}
-
-        </div>
+                {isShareModalOpen && (
+                    <ShareModal 
+                        file={selectedFile} 
+                        onClose={() => setIsShareModalOpen(false)} 
+                    />
+                )}
+            </div>
     );
 }
 
