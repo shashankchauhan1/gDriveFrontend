@@ -1,0 +1,121 @@
+
+
+/* Main container styling */
+#root {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 2rem;
+  text-align: center;
+  background: #f4f6fb;
+  border-radius: 14px;
+  box-shadow: 0 2px 16px rgba(40, 44, 52, 0.08);
+}
+
+/* Navigation bar styling */
+nav {
+  background: #232946;
+  border-radius: 10px;
+  box-shadow: 0 1px 8px rgba(40, 44, 52, 0.10);
+  margin-bottom: 2rem;
+  padding: 0.7rem 1.2rem;
+}
+nav ul {
+  list-style: none;
+  display: flex;
+  gap: 2rem;
+  justify-content: center;
+  align-items: center;
+  margin: 0;
+  padding: 0;
+}
+nav a {
+  text-decoration: none;
+  color: #eebbc3;
+  font-weight: 600;
+  font-size: 1.08rem;
+  transition: color 0.2s;
+}
+nav a:hover {
+  color: #f9f9f9;
+}
+nav button {
+  background: #eebbc3;
+  color: #232946;
+  border: none;
+  border-radius: 6px;
+  padding: 0.45rem 1.2rem;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 1.05rem;
+  transition: background 0.2s, color 0.2s;
+}
+nav button:hover {
+  background: #f9f9f9;
+  color: #232946;
+}
+
+/* Heading styling */
+h1 {
+  font-size: 2.3rem;
+  color: #232946;
+  margin-bottom: 2rem;
+  letter-spacing: 1px;
+  font-weight: 700;
+}
+
+/* Modal styling */
+.modal-backdrop {
+  position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+  background-color: rgba(35, 41, 70, 0.45);
+  display: flex; justify-content: center; align-items: center;
+  z-index: 1000;
+}
+.modal-content {
+  background: #fff;
+  padding: 28px;
+  border-radius: 12px;
+  width: 400px;
+  box-shadow: 0 2px 18px rgba(40,44,52,0.13);
+}
+.modal-actions {
+  margin-top: 20px; display: flex; justify-content: flex-end; gap: 14px;
+}
+
+/* File/folder list styling */
+.file-list {
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0 1px 8px rgba(40,44,52,0.10);
+  padding: 1.2rem;
+  margin-bottom: 2rem;
+}
+.file-list-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.6rem 1rem;
+  border-bottom: 1px solid #eebbc3;
+}
+.file-list-item:last-child {
+  border-bottom: none;
+}
+.file-list-item .file-name {
+  font-weight: 600;
+  color: #232946;
+}
+.file-list-item .file-actions button {
+  margin-left: 0.5rem;
+  background: #eebbc3;
+  color: #232946;
+  border: none;
+  border-radius: 6px;
+  padding: 0.32rem 0.8rem;
+  cursor: pointer;
+  font-size: 1rem;
+  font-weight: 500;
+  transition: background 0.2s, color 0.2s;
+}
+.file-list-item .file-actions button:hover {
+  background: #232946;
+  color: #eebbc3;
+}
