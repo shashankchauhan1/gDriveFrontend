@@ -2,6 +2,9 @@
 
 import { useState } from 'react';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
+import { useToast } from '../context/ToastContext.jsx';
+import { getErrorMessage } from '../utils/errors.js';
 
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:7500';
 
@@ -14,6 +17,9 @@ function Register() {
 
   const { username, email, password } = formData;
 
+  const navigate = useNavigate();
+  const { showToast } = useToast();
+
   const onChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
@@ -23,12 +29,12 @@ function Register() {
     try {
       const response = await axios.post(`${API_URL}/api/auth/register`, formData);
       console.log('Registration successful:', response.data);
-      alert('Registration successful! Please log in.');
-      // Here you would typically redirect the user or clear the form
+      showToast({ type: 'success', message: 'Registration successful! Please log in.' });
+      navigate('/login');
     } catch (error) {
-      const message = error?.response?.data?.message || error?.message || 'Registration failed';
+      const message = getErrorMessage(error, 'Registration failed');
       console.error('Registration error:', message);
-      alert(`Registration failed: ${message}`);
+      showToast({ type: 'error', message });
     }
   };
 

@@ -1,12 +1,15 @@
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 import { format } from 'date-fns';
+import { useToast } from '../context/ToastContext.jsx';
+import { getErrorMessage } from '../utils/errors.js';
 
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:7500';
 
 function History() {
   const [events, setEvents] = useState([]);
   const [loading, setLoading] = useState(true);
+  const { showToast } = useToast();
 
   useEffect(() => {
     const load = async () => {
@@ -16,6 +19,7 @@ function History() {
         setEvents(res.data);
       } catch (e) {
         console.error('Failed to load history', e);
+        showToast({ type: 'error', message: getErrorMessage(e, 'Failed to load history.') });
       } finally {
         setLoading(false);
       }

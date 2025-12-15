@@ -1,16 +1,20 @@
 // client/src/components/CreateFolder.jsx
 import { useState } from 'react';
 import axios from 'axios';
+import { useToast } from '../context/ToastContext.jsx';
+import { getErrorMessage } from '../utils/errors.js';
+import { emitAppEvent } from '../utils/eventBus.js';
 
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:7500';
 
 function CreateFolder({ currentFolderId, onFolderCreated }) {
   const [folderName, setFolderName] = useState('');
   const [isCreating, setIsCreating] = useState(false);
+  const { showToast } = useToast();
 
   const handleCreateFolder = async () => {
     if (!folderName.trim()) {
-      alert('Please enter a folder name.');
+      showToast({ type: 'warning', message: 'Folder name is required.' });
       return;
     }
     setIsCreating(true);
@@ -22,9 +26,11 @@ function CreateFolder({ currentFolderId, onFolderCreated }) {
       );
       onFolderCreated(response.data);
       setFolderName(''); // Reset input
+      showToast({ type: 'success', message: 'Folder created.' });
+      emitAppEvent('permissions:changed', { reason: 'folder-create', parentId: currentFolderId });
     } catch (error) {
       console.error('Error creating folder:', error);
-      alert('Error creating folder.');
+      showToast({ type: 'error', message: getErrorMessage(error, 'Error creating folder.') });
     } finally {
       setIsCreating(false);
     }

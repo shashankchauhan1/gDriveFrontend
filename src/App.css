@@ -12,9 +12,13 @@ nav {
   position: sticky;
   top: 0;
   z-index: 50;
-  background: rgba(255,255,255,0.7);
+  background: rgba(255, 255, 255, 0.8);
   backdrop-filter: saturate(180%) blur(10px);
-  border-bottom: 1px solid #eef2f7;
+  border-bottom: 1px solid rgba(148, 163, 184, 0.2);
+}
+[data-theme="dark"] nav {
+  background: rgba(15, 23, 42, 0.92);
+  border-bottom-color: rgba(148, 163, 184, 0.3);
 }
 nav ul {
   list-style: none;
@@ -38,6 +42,10 @@ nav a {
 nav a:hover {
   background: #f3f4f6;
 }
+[data-theme="dark"] nav a:hover {
+  background: #0b1220;
+  color: var(--accent);
+}
 nav button {
   background: var(--brand-600);
   color: #fff;
@@ -50,6 +58,9 @@ nav button {
 }
 nav button:hover {
   background: var(--brand-700);
+}
+[data-theme="dark"] nav button {
+  color: #fff;
 }
 
 /* Heading styling */

@@ -4,6 +4,8 @@ import { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext'; // <-- Import useAuth
+import { useToast } from '../context/ToastContext.jsx';
+import { getErrorMessage } from '../utils/errors.js';
 
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:7500';
 
@@ -13,6 +15,7 @@ function Login() {
   const [errorMsg, setErrorMsg] = useState('');
   const { login } = useAuth(); 
   const navigate = useNavigate();
+  const { showToast } = useToast();
 
   // Handle input changes
   const onChange = (e) => {
@@ -26,12 +29,13 @@ function Login() {
     try {
       const response = await axios.post(`${API_URL}/api/auth/login`, formData);
       login(response.data.token);
-      alert('Login successful!');
+      showToast({ type: 'success', message: 'Logged in successfully.' });
       navigate('/dashboard');
     } catch (error) {
       // Gracefully handle error and show user-friendly message
-      let message = error?.response?.data?.message || error?.message || 'Login failed. Please try again.';
+      const message = getErrorMessage(error, 'Login failed. Please try again.');
       setErrorMsg(message);
+      showToast({ type: 'error', message });
       console.error('Login error:', error);
     }
   };

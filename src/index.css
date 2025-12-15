@@ -52,6 +52,10 @@ html, body, #root {
 html, body {
   margin: 0;
   padding: 0;
+  background-color: var(--bg);
+}
+body {
+  min-height: 100vh;
 }
 img, svg, video, canvas {
   display: block;
@@ -70,6 +74,7 @@ body {
     radial-gradient(1200px 600px at 10% -10%, var(--brand-50) 0%, transparent 60%),
     radial-gradient(1000px 500px at 110% 10%, #ecfeff 0%, transparent 55%),
     var(--bg);
+  background-attachment: fixed;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
@@ -121,7 +126,13 @@ h3 { font-size: 1.125rem; color: var(--muted); }
   padding: 10px 12px; border-radius: 10px; color: var(--text);
   background: transparent; border: none; text-align: left; cursor: pointer;
 }
-.sidebar a:hover, .sidebar button.linky:hover { background: #f3f4f6; }
+.sidebar a:hover, .sidebar button.linky:hover { background: #eceef3; }
+
+[data-theme="dark"] .sidebar a:hover,
+[data-theme="dark"] .sidebar button.linky:hover {
+  background: #0b1220;
+  color: var(--accent);
+}
 .sidebar .section { margin-top: var(--space-4); font-size: 0.85rem; color: var(--muted); padding-left: 8px; }
 .stack {
   display: flex;
@@ -247,6 +258,43 @@ tbody tr:hover td { background: #fafafc; }
 }
 .modal-content {
   width: min(92vw, 520px);
+}
+
+/* Toasts */
+.toast-stack {
+  position: fixed;
+  right: 24px;
+  bottom: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  z-index: 2000;
+  pointer-events: none;
+}
+.toast-stack .toast {
+  min-width: 280px;
+  max-width: 360px;
+  background: var(--surface);
+  color: var(--text);
+  border-radius: var(--radius-sm);
+  padding: 12px 16px;
+  box-shadow: var(--shadow-md);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  pointer-events: auto;
+  border-left: 4px solid var(--brand-600);
+}
+.toast.success { border-left-color: var(--success); }
+.toast.error { border-left-color: var(--danger); }
+.toast.warning { border-left-color: var(--warning); }
+.toast button {
+  background: transparent;
+  border: none;
+  color: inherit;
+  font-size: 1.1rem;
+  cursor: pointer;
 }
 
 /* Responsive typography & spacing */

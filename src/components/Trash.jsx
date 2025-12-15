@@ -1,11 +1,15 @@
 import { useEffect, useState } from 'react';
 import axios from 'axios';
+import { useToast } from '../context/ToastContext.jsx';
+import { getErrorMessage } from '../utils/errors.js';
+import { emitAppEvent } from '../utils/eventBus.js';
 
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:7500';
 
 function Trash() {
   const [items, setItems] = useState([]);
   const [loading, setLoading] = useState(true);
+  const { showToast } = useToast();
 
   const load = async () => {
     try {
@@ -14,20 +18,23 @@ function Trash() {
       setItems(res.data);
     } catch (e) {
       console.error('Failed to load trash', e);
+      showToast({ type: 'error', message: getErrorMessage(e, 'Failed to load trash.') });
     } finally {
       setLoading(false);
     }
   };
 
-  useEffect(() => { load(); }, []);
+  useEffect(() => { load(); }, [showToast]);
 
   const restore = async (id) => {
     try {
       const token = localStorage.getItem('token');
       await axios.put(`${API_URL}/api/files/${id}/restore`, {}, { headers: { 'x-auth-token': token } });
       setItems(prev => prev.filter(i => i._id !== id));
+      showToast({ type: 'success', message: 'Item restored.' });
+      emitAppEvent('permissions:changed', { reason: 'restore', fileId: id });
     } catch (e) {
-      alert('Restore failed');
+      showToast({ type: 'error', message: getErrorMessage(e, 'Restore failed.') });
     }
   };
 
@@ -37,8 +44,10 @@ function Trash() {
       const token = localStorage.getItem('token');
       await axios.delete(`${API_URL}/api/files/trash/${id}`, { headers: { 'x-auth-token': token } });
       setItems(prev => prev.filter(i => i._id !== id));
+      showToast({ type: 'success', message: 'Item deleted permanently.' });
+      emitAppEvent('permissions:changed', { reason: 'purge', fileId: id });
     } catch (e) {
-      alert('Delete permanently failed');
+      showToast({ type: 'error', message: getErrorMessage(e, 'Delete permanently failed.') });
     }
   };
 
