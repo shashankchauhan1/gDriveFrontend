@@ -1,0 +1,256 @@
+/**
+ * Dashboard Component Styles
+ * Responsive layout for file management interface
+ */
+
+.dashboard {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  padding: var(--space-4) 0;
+  padding-bottom: var(--space-6);
+}
+
+/* Header & Toolbar */
+.dashboard-header {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  margin-bottom: var(--space-2);
+}
+
+.dashboard h2 {
+  margin: 0;
+  font-size: var(--text-3);
+}
+
+.dashboard-toolbar {
+  display: flex;
+  gap: var(--space-3);
+  align-items: center;
+  justify-content: space-between;
+  background: var(--surface);
+  padding: var(--space-3);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-sm);
+  flex-wrap: wrap;
+}
+
+.toolbar-search {
+  flex: 1;
+  min-width: 250px;
+  display: flex;
+  gap: var(--space-2);
+  align-items: center;
+}
+
+.toolbar-search .search-input {
+  width: 100%;
+}
+
+.toolbar-actions {
+  display: flex;
+  gap: var(--space-3);
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.icon-btn {
+  padding: 6px 10px;
+  font-size: 1.1rem;
+}
+
+/* Breadcrumb navigation */
+.breadcrumb-container {
+  width: 100%;
+  background: var(--surface);
+  border-radius: var(--radius-md);
+  padding: var(--space-3) var(--space-4);
+  box-shadow: var(--shadow-sm);
+}
+
+.breadcrumbs {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: 0.9rem;
+}
+
+.breadcrumb-item {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.breadcrumb-separator {
+  color: var(--muted);
+  font-weight: 600;
+}
+
+.crumb-btn {
+  background: transparent;
+  border: none;
+  color: var(--brand-600);
+  cursor: pointer;
+  font-weight: 500;
+  padding: 4px 6px;
+  border-radius: 4px;
+  transition: all 0.2s ease;
+  font-family: inherit;
+  font-size: inherit;
+}
+
+.crumb-btn:hover {
+  background: rgba(109, 40, 217, 0.1);
+  color: var(--brand-700);
+}
+
+[data-theme="dark"] .crumb-btn:hover {
+  background: rgba(124, 58, 237, 0.2);
+  color: var(--accent);
+}
+
+/* File View Card */
+.file-view-card {
+  min-height: 400px;
+}
+
+/* Contents header with loading indicator */
+.contents-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4);
+}
+
+.contents-header h3 {
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.loading-indicator {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 0.85rem;
+  font-weight: 400;
+  color: var(--muted);
+  animation: pulse 1.5s ease-in-out infinite;
+}
+
+@keyframes pulse {
+
+  0%,
+  100% {
+    opacity: 0.6;
+  }
+
+  50% {
+    opacity: 1;
+  }
+}
+
+/**
+ * Responsive breakpoints
+ */
+
+/* Tablet and smaller */
+@media (max-width: 768px) {
+  .dashboard {
+    gap: var(--space-3);
+    padding: var(--space-3) 0;
+  }
+
+  .dashboard-toolbar {
+    padding: var(--space-3);
+    flex-direction: column;
+    align-items: stretch;
+    gap: var(--space-3);
+  }
+
+  .toolbar-search {
+    min-width: 0;
+  }
+
+  .toolbar-actions {
+    justify-content: stretch;
+  }
+
+  .toolbar-actions .btn {
+    flex: 1;
+    justify-content: center;
+  }
+
+  .breadcrumb-container {
+    padding: var(--space-2) var(--space-3);
+  }
+
+  .breadcrumbs {
+    gap: var(--space-1);
+    font-size: 0.85rem;
+  }
+
+  .contents-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-2);
+  }
+}
+
+/* Small mobile devices */
+@media (max-width: 480px) {
+  .dashboard-header {
+    text-align: center;
+  }
+
+  .dashboard h2 {
+    font-size: 1.25rem;
+  }
+
+  .dashboard-toolbar {
+    padding: var(--space-2);
+  }
+
+  .breadcrumb-container {
+    padding: var(--space-2);
+  }
+
+  .breadcrumbs {
+    gap: var(--space-1);
+    font-size: 0.8rem;
+  }
+
+  .crumb-btn {
+    padding: 3px 5px;
+    font-size: 0.8rem;
+  }
+
+  .contents-header h3 {
+    gap: var(--space-1);
+    font-size: 1rem;
+  }
+
+  .loading-indicator {
+    font-size: 0.75rem;
+  }
+}
+
+/**
+ * Dark theme adjustments
+ */
+[data-theme="dark"] .dashboard-toolbar,
+[data-theme="dark"] .breadcrumb-container {
+  box-shadow: var(--shadow-md);
+  border: 1px solid rgba(148, 163, 184, 0.08);
+}
+
+[data-theme="dark"] .crumb-btn {
+  color: var(--accent);
+}
+
+[data-theme="dark"] .crumb-btn:hover {
+  background: rgba(124, 58, 237, 0.2);
+}

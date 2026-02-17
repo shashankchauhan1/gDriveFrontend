@@ -1,0 +1,360 @@
+/**
+ * FileList Component Styles
+ * Responsive design that adapts from table view (desktop) to card view (mobile)
+ */
+
+.file-list-container {
+  width: 100%;
+}
+
+/* Desktop table view - visible on larger screens */
+.table-responsive {
+  display: block;
+  overflow-x: auto;
+}
+
+.files-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: var(--surface);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-sm);
+}
+
+.files-table thead th {
+  text-align: left;
+  font-weight: 700;
+  color: var(--muted);
+  border-bottom: 1px solid #eef2f7;
+  padding: 12px 16px;
+  font-size: 0.9rem;
+  white-space: nowrap;
+}
+
+[data-theme="dark"] .files-table thead th {
+  border-bottom-color: rgba(148, 163, 184, 0.18);
+  color: var(--muted);
+}
+
+.files-table tbody td {
+  padding: 14px 16px;
+  border-bottom: 1px solid #f1f5f9;
+}
+
+[data-theme="dark"] .files-table tbody td {
+  border-bottom-color: rgba(148, 163, 184, 0.08);
+}
+
+.files-table tbody tr {
+  transition: background-color 0.2s ease;
+}
+
+.files-table tbody tr:hover {
+  background: #fafafc;
+}
+
+[data-theme="dark"] .files-table tbody tr:hover {
+  background: rgba(30, 41, 59, 0.6);
+}
+
+.files-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+/* Column widths for better readability */
+.col-name {
+  min-width: 200px;
+}
+
+.col-date {
+  white-space: nowrap;
+  width: 180px;
+}
+
+.col-size {
+  white-space: nowrap;
+  width: 100px;
+  text-align: right;
+}
+
+.col-actions {
+  white-space: nowrap;
+  width: 320px;
+}
+
+/* Mobile card grid view - visible on small screens */
+.files-grid {
+  display: none;
+  grid-template-columns: 1fr;
+  gap: var(--space-4);
+  padding: 0;
+}
+
+/* File cards for mobile */
+.file-card {
+  background: var(--surface);
+  border-radius: var(--radius-md);
+  padding: var(--space-4);
+  box-shadow: var(--shadow-sm);
+  border: 1px solid #f1f5f9;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  transition: box-shadow 0.2s ease, transform 0.2s ease;
+}
+
+[data-theme="dark"] .file-card {
+  border-color: rgba(148, 163, 184, 0.08);
+}
+
+.file-card:hover {
+  box-shadow: var(--shadow-md);
+  transform: translateY(-2px);
+}
+
+.file-card-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--space-3);
+  flex: 1;
+}
+
+.file-name-section {
+  flex: 1;
+  min-width: 0;
+}
+
+.file-name {
+  display: block;
+  word-break: break-word;
+  font-weight: 600;
+  font-size: 1rem;
+  line-height: 1.4;
+}
+
+.file-folder {
+  color: var(--brand-600);
+  cursor: pointer;
+  padding: 4px 0;
+  border-radius: 4px;
+}
+
+.file-folder:hover,
+.file-folder:focus {
+  background: rgba(109, 40, 217, 0.1);
+  outline: none;
+}
+
+.file-link {
+  color: var(--brand-600);
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.file-link:hover {
+  color: var(--brand-700);
+  text-decoration: underline;
+}
+
+/* Metadata section */
+.file-card-meta {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  gap: var(--space-3);
+  padding: var(--space-2) 0;
+  border-top: 1px solid #f1f5f9;
+  border-bottom: 1px solid #f1f5f9;
+}
+
+[data-theme="dark"] .file-card-meta {
+  border-color: rgba(148, 163, 184, 0.08);
+}
+
+.meta-item {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+
+.meta-label {
+  font-size: 0.75rem;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  font-weight: 600;
+}
+
+.meta-value {
+  font-size: 0.9rem;
+  color: var(--text);
+  font-weight: 500;
+}
+
+/* File actions - buttons layout */
+.file-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  padding-top: var(--space-2);
+}
+
+.file-actions .btn {
+  flex: 1;
+  min-width: 80px;
+  white-space: nowrap;
+  font-size: 0.8rem;
+  padding: 6px 8px;
+  border-radius: var(--radius-sm);
+  border: 1px solid transparent;
+}
+
+.file-actions .btn.ghost {
+  border: 1px solid #e5e7eb;
+}
+
+[data-theme="dark"] .file-actions .btn.ghost {
+  border-color: rgba(148, 163, 184, 0.22);
+}
+
+/* Empty state */
+.empty-state {
+  text-align: center;
+  padding: var(--space-10);
+  background: var(--surface);
+  border-radius: var(--radius-md);
+  border: 2px dashed rgba(148, 163, 184, 0.2);
+}
+
+.empty-message {
+  font-size: var(--text-3);
+  color: var(--text);
+  margin: 0 0 var(--space-2);
+  font-weight: 600;
+}
+
+.empty-hint {
+  font-size: var(--text-1);
+  color: var(--muted);
+  margin: 0;
+}
+
+/**
+ * Responsive breakpoints
+ */
+
+/* Tablet and up - show table, hide cards */
+@media (min-width: 769px) {
+  .table-responsive {
+    display: block;
+    overflow-x: auto;
+  }
+
+  .files-grid {
+    display: none;
+  }
+
+  .files-table tbody td {
+    padding: 12px 16px;
+    vertical-align: middle;
+  }
+
+  /* Specific column adjustments for desktop */
+  .col-actions {
+    width: 400px;
+    /* Increased to fit buttons */
+  }
+
+  /* Force buttons to stay on one line in table */
+  .files-table .file-actions {
+    flex-wrap: nowrap;
+    padding-top: 0;
+  }
+
+  .files-table .file-actions .btn {
+    min-width: auto;
+    padding: 6px 10px;
+  }
+}
+
+/* Mobile - show cards, hide table */
+@media (max-width: 768px) {
+  .table-responsive {
+    display: none;
+  }
+
+  .files-grid {
+    display: grid;
+  }
+
+  .file-card {
+    padding: var(--space-3);
+  }
+
+  .file-actions .btn {
+    font-size: 0.75rem;
+    padding: 6px 6px;
+  }
+}
+
+/* Small mobile devices */
+@media (max-width: 480px) {
+  .file-card {
+    padding: var(--space-3);
+    gap: var(--space-2);
+  }
+
+  .file-card-header {
+    flex-direction: column;
+    gap: var(--space-2);
+  }
+
+  .file-card-meta {
+    grid-template-columns: 1fr;
+    gap: var(--space-2);
+    padding: var(--space-2) 0;
+  }
+
+  .meta-value {
+    font-size: 0.85rem;
+  }
+
+  .file-actions {
+    gap: var(--space-1);
+    padding-top: var(--space-2);
+  }
+
+  .file-actions .btn {
+    flex: 1 1 calc(50% - 4px);
+    min-width: auto;
+    font-size: 0.7rem;
+    padding: 5px 4px;
+  }
+}
+
+/**
+ * Dark theme specific styles
+ */
+[data-theme="dark"] .file-card {
+  box-shadow: var(--shadow-md);
+}
+
+[data-theme="dark"] .file-card:hover {
+  box-shadow: var(--shadow-lg);
+}
+
+[data-theme="dark"] .file-name-section {
+  color: var(--text);
+}
+
+[data-theme="dark"] .file-link {
+  color: var(--accent);
+}
+
+[data-theme="dark"] .file-link:hover {
+  color: #06b6d4;
+}
+
+[data-theme="dark"] .empty-state {
+  border-color: rgba(148, 163, 184, 0.08);
+}

@@ -14,25 +14,39 @@ import History from './components/History';
 import Trash from './components/Trash';
 import './App.css';
 
+/**
+ * Main App Component
+ * Handles routing, authentication state, theme switching, and navigation
+ */
 function App() {
   // Get authentication state and logout function from context
   const { isAuthenticated, logout } = useAuth();
   const [theme, setTheme] = useState(localStorage.getItem('theme') || 'light');
+  // State for mobile sidebar toggle
+  const [sidebarOpen, setSidebarOpen] = useState(false);
 
+  // Apply theme to document and persist to localStorage
   useEffect(() => {
     document.documentElement.setAttribute('data-theme', theme);
     localStorage.setItem('theme', theme);
   }, [theme]);
 
+  // Close sidebar when route changes (for better UX on mobile)
+  useEffect(() => {
+    setSidebarOpen(false);
+  }, []);
+
   return (
     <Router>
       <div>
-        {/* Navigation bar changes based on authentication status */}
-        <nav>
-          <ul>
-            <li style={{ marginRight: 'auto', display: 'flex', alignItems: 'center', gap: 8 }}>
-              <span className="badge brand">Cloud-Box</span>
+        {/* Navigation bar - responsive header */}
+        <nav className="navbar">
+          <ul className="nav-list">
+            {/* Logo/Brand section */}
+            <li className="nav-brand">
+              <span className="badge brand">☁️ Cloud-Box</span>
             </li>
+
             {!isAuthenticated ? (
               <>
                 {/* Show Register and Login links if not authenticated */}
@@ -41,15 +55,45 @@ function App() {
               </>
             ) : (
               <>
-                {/* Show dashboard, shared files, and logout if authenticated */}
-                <li><Link to="/dashboard">My Drive</Link></li>
-                <li><Link to="/shared-with-me">Shared with me</Link></li>
-                <li><Link to="/history">History</Link></li>
-                <li><Link to="/profile">Profile</Link></li>
-                <li><button onClick={logout}>Logout</button></li>
-                <li>
-                  <button className="btn secondary" onClick={() => setTheme(theme === 'light' ? 'dark' : 'light')}>
-                    {theme === 'light' ? 'Dark' : 'Light'} mode
+                {/* Desktop navigation links - hidden on mobile */}
+                <li className="nav-desktop">
+                  <Link to="/dashboard">My Drive</Link>
+                </li>
+                <li className="nav-desktop">
+                  <Link to="/shared-with-me">Shared with me</Link>
+                </li>
+                <li className="nav-desktop">
+                  <Link to="/history">History</Link>
+                </li>
+                <li className="nav-desktop">
+                  <Link to="/profile">Profile</Link>
+                </li>
+                
+                {/* Theme toggle and logout buttons */}
+                <li className="nav-right-items">
+                  <button 
+                    className="btn secondary" 
+                    title={`Switch to ${theme === 'light' ? 'dark' : 'light'} mode`}
+                    onClick={() => setTheme(theme === 'light' ? 'dark' : 'light')}
+                  >
+                    {theme === 'light' ? '🌙' : '☀️'}
+                  </button>
+                </li>
+                <li className="nav-right-items">
+                  <button onClick={logout} className="btn">Logout</button>
+                </li>
+
+                {/* Mobile hamburger menu button */}
+                <li className="nav-hamburger">
+                  <button 
+                    className="hamburger"
+                    onClick={() => setSidebarOpen(!sidebarOpen)}
+                    title="Toggle navigation menu"
+                    aria-label="Toggle navigation"
+                  >
+                    <span />
+                    <span />
+                    <span />
                   </button>
                 </li>
               </>
@@ -69,16 +113,42 @@ function App() {
           </Routes>
         ) : (
           <div className="layout">
-            <aside className="sidebar">
-              <div className="section">Navigation</div>
+            {/* Mobile overlay when sidebar is open */}
+            {sidebarOpen && (
+              <div 
+                className="sidebar-overlay"
+                onClick={() => setSidebarOpen(false)}
+              />
+            )}
+
+            {/* Responsive sidebar - slides in on mobile, always visible on desktop */}
+            <aside className={`sidebar ${sidebarOpen ? 'open' : ''}`}>
+              <div className="section">📍 Navigation</div>
               <ul>
-                <li><Link className="linky" to="/dashboard">🏠 Home</Link></li>
-                {/* <li><Link className="linky" to="/dashboard">📁 My Drive</Link></li> */}
-                <li><Link className="linky" to="/shared-with-me">🤝 Shared with me</Link></li>
-                <li><Link className="linky" to="/history">🕑 Recent</Link></li>
-                <li><Link className="linky" to="/trash">🗑️ Trash</Link></li>
+                <li>
+                  <Link className="linky" to="/dashboard" onClick={() => setSidebarOpen(false)}>
+                    🏠 Home
+                  </Link>
+                </li>
+                <li>
+                  <Link className="linky" to="/shared-with-me" onClick={() => setSidebarOpen(false)}>
+                    🤝 Shared with me
+                  </Link>
+                </li>
+                <li>
+                  <Link className="linky" to="/history" onClick={() => setSidebarOpen(false)}>
+                    🕑 Recent
+                  </Link>
+                </li>
+                <li>
+                  <Link className="linky" to="/trash" onClick={() => setSidebarOpen(false)}>
+                    🗑️ Trash
+                  </Link>
+                </li>
               </ul>
             </aside>
+
+            {/* Main content area */}
             <div className="stack">
               <Routes>
                 <Route path="/" element={<Navigate to="/dashboard" />} />
